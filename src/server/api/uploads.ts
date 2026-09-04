@@ -16,7 +16,6 @@ export async function persistUpload(context: ApiContext, kind: "invoices" | "pay
     data: { workspaceId: context.workspace.id, kind: kind === "invoices" ? "INVOICES" : "PAYMENTS", filename, byteSize: bytes.byteLength, sha256: createHash("sha256").update(bytes).digest("hex"), parseErrors: errors as unknown as Prisma.InputJsonValue },
   });
   try {
-    await saveUploadFile(context.workspace.id, upload.id, bytes);
     await context.db.$transaction(async (tx) => {
       if (invoiceParse) {
         for (const row of invoiceParse.rows) await tx.invoice.upsert({
@@ -35,7 +34,6 @@ export async function persistUpload(context: ApiContext, kind: "invoices" | "pay
     });
   } catch (error) {
     await context.db.fileUpload.delete({ where: { id: upload.id } }).catch(() => undefined);
-    await deleteUploadFile(context.workspace.id, upload.id);
     throw error instanceof Error ? error : new Error("Upload persistence failed");
   }
   return { ...upload, rowCount };
