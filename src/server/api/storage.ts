@@ -1,6 +1,7 @@
 import {mkdir,readFile,unlink,writeFile} from "node:fs/promises";
 import {join} from "node:path";
-const root=join(process.cwd(),".data","uploads");
+import {tmpdir} from "node:os";
+const root=join(tmpdir(),"borderbooks-uploads");
 const pathFor=(workspaceId:string,uploadId:string)=>join(root,workspaceId,uploadId);
 export async function saveUploadFile(workspaceId:string,uploadId:string,data:Buffer){const directory=join(root,workspaceId);await mkdir(directory,{recursive:true});await writeFile(pathFor(workspaceId,uploadId),data);}
 export const readUploadFile=(workspaceId:string,uploadId:string)=>readFile(pathFor(workspaceId,uploadId));
