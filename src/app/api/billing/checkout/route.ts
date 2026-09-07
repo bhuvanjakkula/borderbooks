@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import {z} from "zod";
 import {requireApiContext} from "@/server/api/context";
 import {failure,json,optionalJson} from "@/server/api/http";
