@@ -3,7 +3,7 @@ import type {Plan} from "@prisma/client";
 
 let client:Stripe|undefined;
 export function stripeClient(){const secret=process.env.STRIPE_SECRET_KEY;if(!secret)throw new Error("STRIPE_SECRET_KEY is not configured");return client??=new Stripe(secret);}
-export function appUrl(){const configured=process.env.NEXT_PUBLIC_APP_URL;if(!configured)throw new Error("NEXT_PUBLIC_APP_URL is not configured");return new URL(configured).origin;}
+export function appUrl(){const configured=process.env.NEXT_PUBLIC_APP_URL || process.env.RENDER_EXTERNAL_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined);if(!configured)throw new Error("NEXT_PUBLIC_APP_URL is not configured");return new URL(configured).origin;}
 export function priceFor(plan:Plan){const price=plan==="COMMERCE"?process.env.STRIPE_PRICE_COMMERCE:process.env.STRIPE_PRICE_STUDIO;if(!price)throw new Error(`Stripe price for ${plan} is not configured`);return price;}
 export function planForPrice(priceId:string|undefined):Plan{return priceId&&priceId===process.env.STRIPE_PRICE_COMMERCE?"COMMERCE":"STUDIO";}
 
