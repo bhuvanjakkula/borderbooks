@@ -1,0 +1,8 @@
+{
+  "name": "borderbooks-root",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}
