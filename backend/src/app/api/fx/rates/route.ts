@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { db } from "../../../server/db/client";
-import { fetchMidRate, fetchRateHistory } from "../../../server/fx";
+import { db } from "@/server/db/client";
+import { fetchMidRate, fetchRateHistory } from "@/server/fx";
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const claims = event.requestContext?.authorizer?.claims;
