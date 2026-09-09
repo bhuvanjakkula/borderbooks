@@ -7,7 +7,7 @@ const config: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/api/:path*`,
+        destination: "https://backend-peach-gamma-10.vercel.app/api/:path*",
       },
     ];
   },
