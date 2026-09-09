@@ -1,6 +1,5 @@
 packages:
-  - 'frontend'
-  - 'backend'
+  - .
 allowBuilds:
   '@clerk/shared': true
   '@prisma/client': true
