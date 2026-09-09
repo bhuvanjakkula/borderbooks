@@ -32,6 +32,8 @@
     "@types/express": "^5.0.6",
     "@types/node": "^22.18.0",
     "@types/pdfkit": "^0.13.9",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
     "aws-cdk": "^2.1140.0",
     "esbuild": "^0.28.2",
     "prisma": "^6.15.0",
