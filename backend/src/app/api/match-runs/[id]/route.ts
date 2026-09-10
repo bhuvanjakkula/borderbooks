@@ -3,17 +3,23 @@ import { failure, json } from "@/server/api/http";
 import { exportMatchedLinks } from "@/server/exports/csv-export";
 import type { ExportedLink } from "@/server/exports/csv-export";
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, props: any) {
   try {
     const context = await requireApiContext(request);
-    const { id } = await params;
+    const params = await props.params;
+    const id = params.id;
     const format = new URL(request.url).searchParams.get("format");
 
-    const run = await context.db.matchRun.findFirst({
-      where: { id, workspaceId: context.workspace.id },
+    const run = await context.db.matchRun.findUnique({
+      where: { id },
       include: { links: { include: { invoice: true, txn: true } } },
     });
     if (!run) throw new ApiError(404, "MATCH_RUN_NOT_FOUND", "Match run not found");
+
+    const membership = await context.db.membership.findUnique({
+      where: { workspaceId_userId: { workspaceId: run.workspaceId, userId: context.user.id } }
+    });
+    if (!membership) throw new ApiError(403, "WORKSPACE_FORBIDDEN", "Workspace membership required");
 
     // ── CSV export ──────────────────────────────────────────────────────────
     if (format === "csv") {
@@ -39,7 +45,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
       await context.db.auditEvent.create({
         data: {
-          workspaceId: context.workspace.id,
+          workspaceId: run.workspaceId,
           userId: context.user.id,
           action: "EXPORT",
           payload: { runId: id, format: "csv" },
@@ -58,11 +64,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     // ── Default JSON ─────────────────────────────────────────────────────────
     const [uploads, invoices, txns] = await Promise.all([
       context.db.fileUpload.findMany({
-        where: { workspaceId: context.workspace.id, id: { in: [run.invoiceUploadId, run.paymentUploadId] } },
+        where: { workspaceId: run.workspaceId, id: { in: [run.invoiceUploadId, run.paymentUploadId] } },
         select: { id: true, kind: true, parseErrors: true },
       }),
-      context.db.invoice.findMany({ where: { workspaceId: context.workspace.id, uploadId: run.invoiceUploadId } }),
-      context.db.bankTxn.findMany({ where: { workspaceId: context.workspace.id, uploadId: run.paymentUploadId } }),
+      context.db.invoice.findMany({ where: { workspaceId: run.workspaceId, uploadId: run.invoiceUploadId } }),
+      context.db.bankTxn.findMany({ where: { workspaceId: run.workspaceId, uploadId: run.paymentUploadId } }),
     ]);
     const linkedInvoiceIds = new Set(run.links.map((link) => link.invoiceId));
     const linkedTxnIds = new Set(run.links.map((link) => link.txnId));

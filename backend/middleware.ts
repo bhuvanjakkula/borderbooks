@@ -5,9 +5,6 @@ const protectedRoute = createRouteMatcher(["/app(.*)", "/api(.*)"]);
 export default clerkMiddleware(async (auth, request) => {
   if (request.nextUrl.pathname === "/api/webhooks/stripe") return;
   if (protectedRoute(request)) await auth.protect();
-}, {
-  publishableKey: "pk_test_ZWFzeS15YWstMjA3Mi5jbGVyay5hY2NvdW50cy5kZXYk",
-  secretKey: "sk_test_StswQtmWAp95aojd0lEUkoRXpyqlVwyrfgHt90aWNO"
 });
 
 export const config = { matcher: ["/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)", "/(api|trpc)(.*)"] };

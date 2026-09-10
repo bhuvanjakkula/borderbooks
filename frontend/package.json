@@ -46,5 +46,12 @@
   "packageManager": "pnpm@10.15.0",
   "pnpm": {
     "onlyBuiltDependencies": ["@clerk/shared", "@prisma/client", "@prisma/engines", "esbuild", "prisma", "sharp"]
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "prisma": true,
+    "@clerk/shared": true,
+    "@prisma/client": true,
+    "@prisma/engines": true
   }
 }

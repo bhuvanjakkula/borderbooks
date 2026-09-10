@@ -9,11 +9,16 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const context = await requireApiContext(request);
     const { id } = await params;
 
-    const run = await context.db.matchRun.findFirst({
-      where: { id, workspaceId: context.workspace.id },
+    const run = await context.db.matchRun.findUnique({
+      where: { id },
       include: { links: { include: { invoice: true, txn: true } } },
     });
     if (!run) throw new ApiError(404, "MATCH_RUN_NOT_FOUND", "Match run not found");
+
+    const membership = await context.db.membership.findUnique({
+      where: { workspaceId_userId: { workspaceId: run.workspaceId, userId: context.user.id } }
+    });
+    if (!membership) throw new ApiError(403, "WORKSPACE_FORBIDDEN", "Workspace membership required");
 
     // Build PDF links with live FX rates for cross-currency pairs
     const pdfLinks: PdfLink[] = await Promise.all(
@@ -59,7 +64,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     // Log audit event
     await context.db.auditEvent.create({
       data: {
-        workspaceId: context.workspace.id,
+        workspaceId: run.workspaceId,
         userId: context.user.id,
         action: "EXPORT",
         payload: { runId: id, format: "pdf-report" },
