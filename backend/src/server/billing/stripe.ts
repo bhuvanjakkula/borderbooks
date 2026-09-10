@@ -2,7 +2,7 @@ import Stripe from "stripe";
 import type {Plan} from "@prisma/client";
 
 let client:Stripe|undefined;
-export function stripeClient(){const secret=process.env['STRIPE_SECRET_KEY'] || ("sk_test_" + "51UBwUW0FrglOZ3gwXfcm7pLgSFuQmOTTdorAgefhSPUG40QWajwb3phSPehZjSRe0XwZjRsu6tyjKiSNd6eybGoF00GW2i5YFi");return client??=new Stripe(secret, { apiVersion: "2024-06-20" });}
+export function stripeClient(){const secret=process.env['STRIPE_SECRET_KEY'] || ("sk_test_" + "51UBwUW0FrglOZ3gwXfcm7pLgSFuQmOTTdorAgefhSPUG40QWajwb3phSPehZjSRe0XwZjRsu6tyjKiSNd6eybGoF00GW2i5YFi");return client??=new Stripe(secret, { apiVersion: "2024-06-20" as any });}
 export function appUrl(){const configured=process.env['NEXT_PUBLIC_APP_URL'] || process.env['RENDER_EXTERNAL_URL'] || (process.env['VERCEL_URL'] ? `https://${process.env['VERCEL_URL']}` : undefined);if(!configured)throw new Error("NEXT_PUBLIC_APP_URL is not configured");return new URL(configured).origin;}
 export function priceFor(plan:Plan){const price=plan==="COMMERCE"?(process.env['STRIPE_PRICE_COMMERCE'] || "price_1UD44R0FrglOZ3gwyAFgzX5Y"):(process.env['STRIPE_PRICE_STUDIO'] || "price_1UD44Q0FrglOZ3gwW1KAtzUO");if(!price)throw new Error(`Stripe price for ${plan} is not configured`);return price;}
 export function planForPrice(priceId:string|undefined):Plan{return priceId&&priceId===(process.env['STRIPE_PRICE_COMMERCE'] || "price_1UD44R0FrglOZ3gwyAFgzX5Y")?"COMMERCE":"STUDIO";}
