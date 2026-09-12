@@ -1,7 +1,4 @@
 {
   "outputDirectory": "frontend/.next",
-  "framework": "nextjs",
-  "env": {
-    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_ZWFzeS15YWstMjA3Mi5jbGVyay5hY2NvdW50cy5kZXYk"
-  }
+  "framework": "nextjs"
 }
