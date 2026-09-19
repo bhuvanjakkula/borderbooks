@@ -32,10 +32,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {children}
       </div>
       <footer style={{ background: 'transparent', padding: '1.5rem', textAlign: 'center', color: 'var(--muted)', fontSize: '0.8rem', borderTop: '1px solid var(--line)' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Lock size={14} style={{ color: 'var(--green)' }} /> SOC 2 Type II Certified</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><ShieldCheck size={14} style={{ color: 'var(--green)' }} /> E2E Encryption</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><AlertCircle size={14} style={{ color: 'var(--green)' }} /> Zero-Trust Architecture</span>
+        </div>
+        <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ fontWeight: 600 }}>Support & Queries:</span>
+          <a href="mailto:bjtmusic12@gmail.com" style={{ color: 'var(--green)', textDecoration: 'underline' }}>bjtmusic12@gmail.com</a>
         </div>
       </footer>
     </div>
