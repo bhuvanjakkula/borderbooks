@@ -4,16 +4,16 @@ import { RoleSwitcher } from "./RoleSwitcher";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="shell" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#fafafa' }}>
-      <header className="topbar" style={{ background: '#0f172a', color: 'white', borderBottom: '1px solid #1e293b' }}>
+    <div className="shell" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'radial-gradient(circle at top right, #d1fae5 0%, #f8fafc 40%)' }}>
+      <header className="topbar" style={{ background: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--line)', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-          <Link className="brand" href="/app/dashboard" style={{ color: 'white' }}>
-            <ShieldCheck size={20} style={{ color: '#10b981', marginRight: '0.5rem' }} />
+          <Link className="brand" href="/app/dashboard" style={{ color: 'var(--ink)' }}>
+            <ShieldCheck size={20} style={{ color: 'var(--green)', marginRight: '0.5rem' }} />
             BorderBooks Copilot
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)', padding: '4px 8px', borderRadius: '4px' }}>
-            <Lock size={12} style={{ color: '#10b981' }} />
-            <span style={{ fontSize: '0.7rem', color: '#10b981', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Session Secured (AES-256)</span>
+            <Lock size={12} style={{ color: 'var(--green)' }} />
+            <span style={{ fontSize: '0.7rem', color: 'var(--green)', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Session Secured (AES-256)</span>
           </div>
         </div>
         <nav className="nav" aria-label="Workspace">
@@ -31,11 +31,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div style={{ flex: 1, padding: '2rem 0' }}>
         {children}
       </div>
-      <footer style={{ background: '#0f172a', padding: '1.5rem', textAlign: 'center', color: '#64748b', fontSize: '0.8rem', borderTop: '1px solid #1e293b' }}>
+      <footer style={{ background: 'transparent', padding: '1.5rem', textAlign: 'center', color: 'var(--muted)', fontSize: '0.8rem', borderTop: '1px solid var(--line)' }}>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1.5rem' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Lock size={14} /> SOC 2 Type II Certified</span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><ShieldCheck size={14} /> E2E Encryption</span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><AlertCircle size={14} /> Zero-Trust Architecture</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Lock size={14} style={{ color: 'var(--green)' }} /> SOC 2 Type II Certified</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><ShieldCheck size={14} style={{ color: 'var(--green)' }} /> E2E Encryption</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><AlertCircle size={14} style={{ color: 'var(--green)' }} /> Zero-Trust Architecture</span>
         </div>
       </footer>
     </div>
