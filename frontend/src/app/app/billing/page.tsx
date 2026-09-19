@@ -64,7 +64,7 @@ export default function BillingPage() {
             <li><Check size={15} /> Stripe & Forensic splits</li>
             <li><Check size={15} /> Priority Support</li>
           </ul>
-          <a className="button" style={{ textDecoration: 'none', textAlign: 'center', display: 'block' }} href="https://buy.stripe.com/test_cNiaEP7qXfSZ2p3f4HcjS03" target="_blank" rel="noopener noreferrer">
+          <a className="button" style={{ textDecoration: 'none', textAlign: 'center', display: 'block' }} href="https://buy.stripe.com/test_fZu00bgO211z3mLbwy2oE05" target="_blank" rel="noopener noreferrer">
             Choose Firm
           </a>
         </section>
