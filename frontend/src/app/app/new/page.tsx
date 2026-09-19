@@ -258,7 +258,7 @@ export default function ImportHubPage() {
       {activeTab === 'ocr' && (
         <div 
           className="card"
-          style={{ padding: '4rem 2rem', textAlign: 'center', cursor: 'pointer', borderStyle: 'dashed', borderWidth: '2px', borderColor: status === 'idle' ? 'var(--border)' : '#10b981', transition: 'all 0.2s' }}
+          style={{ padding: '4rem 2rem', textAlign: 'center', cursor: 'pointer', borderStyle: 'dashed', borderWidth: '2px', borderColor: status === 'idle' ? 'var(--border)' : '#10b981', transition: 'all 0.2s', marginBottom: '2rem' }}
           onDragOver={(e) => e.preventDefault()}
           onDrop={handlePdfDrop}
           onClick={() => fileInputRef.current?.click()}
@@ -290,6 +290,12 @@ export default function ImportHubPage() {
           )}
         </div>
       )}
+
+      {/* ALWAYS SHOW LICENSES */}
+      <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--border)' }}>
+        <h3 style={{ marginBottom: '1.5rem' }}>Licenses & Upgrades</h3>
+        <UpgradeBanner />
+      </div>
     </main>
   );
 }
