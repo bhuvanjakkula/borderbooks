@@ -12,10 +12,13 @@ function hasPaidAccess(request: NextRequest): boolean {
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Always allow public landing page, billing page, billing APIs, and Stripe webhooks
+  // Always allow public landing page, password reset, billing page, billing/auth APIs, and Stripe webhooks
   if (
     pathname === "/" ||
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password" ||
     pathname === "/app/billing" ||
+    pathname.startsWith("/api/auth/") ||
     pathname.startsWith("/api/billing/") ||
     pathname === "/api/webhooks/stripe"
   ) {

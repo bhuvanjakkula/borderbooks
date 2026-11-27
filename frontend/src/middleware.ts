@@ -14,7 +14,10 @@ export default function middleware(request: NextRequest) {
 
   if (
     pathname === "/" ||
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password" ||
     pathname === "/app/billing" ||
+    pathname.startsWith("/api/auth/") ||
     pathname.startsWith("/api/billing/") ||
     pathname === "/api/webhooks/stripe"
   ) {

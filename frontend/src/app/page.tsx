@@ -1,6 +1,72 @@
 "use client";
 
-import { ArrowRight, Sparkles, Check, Lock, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Sparkles,
+  Check,
+  Lock,
+  ExternalLink,
+  Cpu,
+  ScanText,
+  Globe2,
+  Split,
+  Bot,
+  ShieldCheck,
+  Mail,
+  KeyRound,
+} from "lucide-react";
+
+const TECHNOLOGIES = [
+  {
+    icon: Cpu,
+    category: "Core Engine",
+    title: "Deterministic & Fuzzy Matching Engine",
+    description:
+      "Multi-pass reconciliation combining exact reference matching, token similarity, configurable date/amount tolerance windows, and partial/split payment attribution.",
+    capabilities: ["Exact & fuzzy reference scoring", "Short-payment & fee variance isolation", "Deterministic replayable runs"],
+  },
+  {
+    icon: ScanText,
+    category: "Document AI",
+    title: "AI Invoice & Statement OCR",
+    description:
+      "Extract invoice numbers, line totals, tax amounts, currencies, and counterparties from PDF and image invoices with per-field confidence indicators.",
+    capabilities: ["PDF & CSV unified Import Hub", "Per-field confidence badges", "Human-in-the-loop review before ingest"],
+  },
+  {
+    icon: Globe2,
+    category: "Treasury FX",
+    title: "Multi-Currency Live & Historical FX",
+    description:
+      "Mid-market FX rate lookups with historical trend analytics and automated realized FX gain/loss attribution across cross-border settlements.",
+    capabilities: ["Historical mid-market FX cache", "Basis-point spread & variance tracking", "Multi-currency invoice normalization"],
+  },
+  {
+    icon: Split,
+    category: "Payout Forensics",
+    title: "Stripe, Wise & Payoneer FX Split",
+    description:
+      "Decompose batched processor payouts into gross sales, refunds, processing fees, net bank deposits, and FX legs for clean ledger posting.",
+    capabilities: ["Stripe payout leg decomposition", "Wise & Payoneer statement parsers", "Balanced journal CSV & XLSX exports"],
+  },
+  {
+    icon: Bot,
+    category: "Operations",
+    title: "AP Copilot & Exception Triage",
+    description:
+      "Flag suspected duplicate invoices, amount mismatches, and unallocated cash in a dedicated exceptions queue with explainable pass/fail traces.",
+    capabilities: ["Duplicate & anomaly detection", "Natural-language AP Copilot queries", "One-click approve, reject & inline edit"],
+  },
+  {
+    icon: ShieldCheck,
+    category: "Compliance",
+    title: "Zero-Trust Cryptographic Audit Ledger",
+    description:
+      "Every upload is SHA-256 fingerprinted and every match carries a plain-English explanation, backed by AES-256 encryption, RBAC, and 30-day auto-purge.",
+    capabilities: ["Immutable audit event ledger", "Multi-role RBAC (Owner, Admin, Auditor)", "PDF workpapers & 30-day file deletion"],
+  },
+] as const;
 
 const PRICING_PLANS = [
   {
@@ -14,7 +80,7 @@ const PRICING_PLANS = [
     features: [
       "1 workspace included",
       "Up to 2,000 rows per reconciliation run",
-      "Deterministic invoice & bank CSV matching",
+      "Deterministic invoice & bank CSV + PDF OCR matching",
       "Bank & generic statement parsers",
       "Explainable audit trail & XLSX / CSV journal exports",
       "30-day automatic upload deletion & zero bank scraping",
@@ -33,8 +99,8 @@ const PRICING_PLANS = [
       "Up to 10,000 rows per reconciliation run",
       "Multi-source parsers (Bank, Stripe, Wise, Payoneer)",
       "Live & historical multi-currency FX rates",
-      "Stripe Payout FX Split analyzer (fees & FX gain/loss)",
-      "Custom account labels, match-window replay & PDF reports",
+      "Stripe & Forensic Payout FX Split analyzer",
+      "AP Copilot exception triage, custom labels & PDF reports",
     ],
   },
   {
@@ -46,9 +112,9 @@ const PRICING_PLANS = [
     cta: "Subscribe to Enterprise",
     stripeUrl: "https://buy.stripe.com/aFa3cngO24dL5uT0RU2oE11",
     features: [
-      "Unlimited workspaces & team members",
+      "Unlimited workspaces & enterprise RBAC",
       "Unlimited rows per high-volume batch run",
-      "All Professional reconciliation, FX & Stripe Split tools",
+      "All Professional OCR, AP Copilot, FX & Forensic Split tools",
       "Audit-ready compliance workpapers & custom exports",
       "Dedicated onboarding & priority technical support",
       "Custom SLA & enterprise security review",
@@ -66,7 +132,7 @@ export default function Home() {
       <main className="min-h-screen relative flex flex-col md:flex-row">
         {/* Left side: Grand Branding */}
         <div className="relative flex-1 flex flex-col p-10 md:p-20 justify-between z-10 border-b md:border-b-0 md:border-r border-white/5">
-          <header className="flex items-center justify-between gap-3 mb-16 animate-fade-in-down">
+          <header className="flex items-center justify-between gap-3 mb-16 flex-wrap">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-white/5 rounded-xl border border-white/10 shadow-lg shadow-[#176b4d]/20 backdrop-blur-md">
                 <Sparkles className="text-[#10b981] w-6 h-6" />
@@ -75,32 +141,41 @@ export default function Home() {
                 BorderBooks
               </span>
             </div>
-            <nav className="flex items-center gap-5 text-sm text-slate-300">
+            <nav className="flex items-center gap-4 text-sm text-slate-300 flex-wrap">
+              <a href="#technologies" className="hover:text-[#10b981] transition-colors font-medium">
+                Technologies
+              </a>
+              <a href="#pricing" className="hover:text-[#10b981] transition-colors font-medium">
+                Pricing
+              </a>
+              <Link href="/forgot-password" className="hover:text-[#10b981] transition-colors font-medium">
+                Forgot Password
+              </Link>
               <a
                 href="#pricing"
                 className="px-4 py-2 rounded-lg bg-[#176b4d] hover:bg-[#10b981] text-white transition-all font-semibold"
               >
-                View Plans &amp; Subscribe
+                Subscribe
               </a>
             </nav>
           </header>
 
-          <section className="max-w-2xl my-auto animate-fade-in-up">
+          <section className="max-w-2xl my-auto">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#176b4d]/10 border border-[#176b4d]/20 text-[#10b981] text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-md">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]"></span>
               </span>
-              Next-Gen Reconciliation
+              Next-Gen Financial Control &amp; Reconciliation
             </div>
-            <h1 className="text-6xl md:text-7xl font-serif font-medium leading-[1.1] tracking-tight mb-8">
+            <h1 className="text-5xl md:text-7xl font-serif font-medium leading-[1.08] tracking-tight mb-8">
               Match invoices with{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10b981] to-[#34d399]">
                 absolute precision.
               </span>
             </h1>
-            <p className="text-xl text-slate-400 leading-relaxed mb-10 font-light">
-              Deterministically match uploaded invoice and bank files, backed by an immutable audit trail that shows exactly why every pair was proposed.
+            <p className="text-lg md:text-xl text-slate-400 leading-relaxed mb-10 font-light">
+              Deterministically match uploaded invoice and bank files with AI OCR, multi-currency FX attribution, forensic Stripe payout splits, and an immutable audit trail.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-12">
@@ -109,6 +184,12 @@ export default function Home() {
                 className="h-14 px-7 bg-gradient-to-r from-[#176b4d] to-[#0a3a2a] hover:from-[#10b981] hover:to-[#176b4d] text-white rounded-xl inline-flex items-center justify-center gap-3 font-bold text-[15px] shadow-[0_0_20px_rgba(23,107,77,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] transition-all duration-300"
               >
                 Choose a Plan to Get Started <ArrowRight size={18} />
+              </a>
+              <a
+                href="#technologies"
+                className="h-14 px-7 bg-white/5 hover:bg-white/10 border border-white/15 text-white rounded-xl inline-flex items-center justify-center gap-2 font-semibold text-[15px] transition-all"
+              >
+                Explore Technologies
               </a>
             </div>
 
@@ -123,7 +204,7 @@ export default function Home() {
                 <span className="text-[#10b981]">✦</span> No bank scraping
               </span>
               <span className="flex items-center gap-2">
-                <span className="text-[#10b981]">✦</span> Absolute privacy
+                <span className="text-[#10b981]">✦</span> AES-256 privacy
               </span>
             </div>
           </section>
@@ -142,7 +223,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="space-y-3 mb-8">
+            <div className="space-y-3 mb-7">
               {PRICING_PLANS.map((plan) => (
                 <a
                   key={plan.name}
@@ -173,12 +254,76 @@ export default function Home() {
               Compare Full Plan Features <ArrowRight size={18} />
             </a>
 
-            <div className="mt-5 text-center text-xs text-slate-400">
-              Dashboard access unlocks automatically after Stripe checkout completes.
+            <div className="mt-6 pt-5 border-t border-white/10 flex flex-col gap-2.5 text-center text-xs text-slate-400">
+              <Link
+                href="/forgot-password"
+                className="inline-flex items-center justify-center gap-1.5 text-[#10b981] hover:underline font-medium"
+              >
+                <KeyRound size={13} /> Forgot Password? Update your password
+              </Link>
+              <span>
+                Support:{" "}
+                <a
+                  href="mailto:contact@apolloaiglobalcompany.com"
+                  className="text-slate-200 hover:text-[#10b981] underline"
+                >
+                  contact@apolloaiglobalcompany.com
+                </a>
+              </span>
             </div>
           </div>
         </div>
       </main>
+
+      {/* Advanced Technologies & Applications Section */}
+      <section id="technologies" className="relative z-10 border-t border-white/10 py-24 px-6 md:px-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#176b4d]/15 border border-[#176b4d]/30 text-[#10b981] text-xs font-bold tracking-widest uppercase mb-5">
+              Advanced Technologies &amp; Applications
+            </div>
+            <h2 className="text-4xl md:text-5xl font-serif font-medium tracking-tight mb-4 text-white">
+              Six specialized engines in one financial-control platform
+            </h2>
+            <p className="text-base md:text-lg text-slate-400 font-light">
+              Built for modern B2B finance teams, controllers, and audit firms handling multi-currency invoices, payment gateways, and regulatory workpapers.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {TECHNOLOGIES.map((tech) => {
+              const Icon = tech.icon;
+              return (
+                <article
+                  key={tech.title}
+                  className="rounded-2xl p-7 bg-white/[0.02] border border-white/10 hover:border-[#10b981]/40 transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="p-2.5 rounded-xl bg-[#176b4d]/20 border border-[#10b981]/30 text-[#10b981]">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        {tech.category}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-serif font-medium text-white mb-3">{tech.title}</h3>
+                    <p className="text-sm text-slate-400 leading-relaxed mb-5">{tech.description}</p>
+                  </div>
+                  <ul className="space-y-2 pt-4 border-t border-white/10">
+                    {tech.capabilities.map((cap) => (
+                      <li key={cap} className="flex items-center gap-2 text-xs text-slate-300">
+                        <Check className="w-3.5 h-3.5 text-[#10b981] shrink-0" />
+                        <span>{cap}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* Pricing Plans Section */}
       <section id="pricing" className="relative z-10 border-t border-white/10 py-24 px-6 md:px-16">
@@ -224,9 +369,7 @@ export default function Home() {
                     <span className="text-sm text-slate-400 font-medium">USD / month</span>
                   </div>
 
-                  <p className="text-sm text-slate-400 leading-relaxed mb-8">
-                    {plan.description}
-                  </p>
+                  <p className="text-sm text-slate-400 leading-relaxed mb-8">{plan.description}</p>
 
                   <ul className="space-y-3.5 mb-10">
                     {plan.features.map((feature) => (
@@ -259,6 +402,36 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      {/* Global Support & Account Footer */}
+      <footer className="relative z-10 border-t border-white/10 py-12 px-6 md:px-16 bg-black/30">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-400">
+          <div className="flex items-center gap-3">
+            <Sparkles className="text-[#10b981] w-5 h-5" />
+            <span className="font-serif font-semibold text-white">BorderBooks</span>
+            <span className="text-slate-600">·</span>
+            <span className="text-xs">Deterministic Financial Reconciliation</span>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs">
+            <a href="#technologies" className="hover:text-[#10b981] transition-colors">
+              Technologies
+            </a>
+            <a href="#pricing" className="hover:text-[#10b981] transition-colors">
+              Pricing (USD)
+            </a>
+            <Link href="/forgot-password" className="hover:text-[#10b981] transition-colors">
+              Forgot Password
+            </Link>
+            <a
+              href="mailto:contact@apolloaiglobalcompany.com"
+              className="inline-flex items-center gap-1.5 text-[#10b981] hover:underline font-semibold"
+            >
+              <Mail size={14} /> Customer Support: contact@apolloaiglobalcompany.com
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
