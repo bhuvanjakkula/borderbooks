@@ -1,6 +1,46 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export default function middleware() {
+const PAID_COOKIE = "bb_paid_access";
+
+function hasPaidAccess(request: NextRequest): boolean {
+  const token = request.cookies.get(PAID_COOKIE)?.value;
+  if (!token) return false;
+  const expected = process.env.PAID_ACCESS_TOKEN || "bb_verified_subscription_v1";
+  return token === expected;
+}
+
+export default function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (
+    pathname === "/" ||
+    pathname === "/app/billing" ||
+    pathname.startsWith("/api/billing/") ||
+    pathname === "/api/webhooks/stripe"
+  ) {
+    return NextResponse.next();
+  }
+
+  if (pathname === "/app" || pathname.startsWith("/app/")) {
+    if (!hasPaidAccess(request)) {
+      const billingUrl = new URL("/app/billing?paywall=1", request.url);
+      return NextResponse.redirect(billingUrl);
+    }
+  }
+
+  if (pathname.startsWith("/api/")) {
+    if (!hasPaidAccess(request)) {
+      return NextResponse.json(
+        {
+          error: "Active paid subscription required to access BorderBooks workspace.",
+          code: "PAYMENT_REQUIRED",
+          billingUrl: "/app/billing",
+        },
+        { status: 402 }
+      );
+    }
+  }
+
   return NextResponse.next();
 }
 

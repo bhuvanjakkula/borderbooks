@@ -1,6 +1,6 @@
 "use client";
-import { Check, ExternalLink } from "lucide-react";
-import { useState } from "react";
+import { Check, ExternalLink, Lock } from "lucide-react";
+import { useEffect, useState } from "react";
 import { asError } from "@/lib/errors";
 
 const PLANS = [
@@ -11,7 +11,7 @@ const PLANS = [
     cadence: "/ month",
     description: "For solo operators and lean finance teams automating core invoice-to-bank matching and OCR.",
     featured: false,
-    cta: "Choose Starter",
+    cta: "Subscribe to Starter",
     stripeUrl: "https://buy.stripe.com/7sY28jeFUfWt9L9gQS2oE13",
     features: [
       "1 workspace included",
@@ -29,7 +29,7 @@ const PLANS = [
     cadence: "/ month",
     description: "For growing multi-currency finance teams reconciling Stripe, Wise, Payoneer & bank payouts.",
     featured: true,
-    cta: "Choose Professional",
+    cta: "Subscribe to Professional",
     stripeUrl: "https://buy.stripe.com/bJefZ9fJYh0x9L9bwy2oE12",
     features: [
       "Up to 5 workspaces & multi-user RBAC",
@@ -47,7 +47,7 @@ const PLANS = [
     cadence: "/ month",
     description: "For high-volume finance operations requiring unlimited scale, zero-trust controls & SLAs.",
     featured: false,
-    cta: "Choose Enterprise",
+    cta: "Subscribe to Enterprise",
     stripeUrl: "https://buy.stripe.com/aFa3cngO24dL5uT0RU2oE11",
     features: [
       "Unlimited workspaces & enterprise RBAC",
@@ -63,6 +63,14 @@ const PLANS = [
 export default function BillingPage() {
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
+  const [showPaywallNotice, setShowPaywallNotice] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("paywall") === "1") {
+      setShowPaywallNotice(true);
+    }
+  }, []);
 
   async function openPortal() {
     setBusy("portal");
@@ -84,10 +92,30 @@ export default function BillingPage() {
 
   return (
     <main className="page narrow">
+      {showPaywallNotice && (
+        <div
+          className="notice"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            border: "1px solid #d8ae69",
+            background: "var(--amber-soft)",
+            color: "#76521c",
+            marginBottom: 20,
+          }}
+        >
+          <Lock size={16} style={{ flexShrink: 0 }} />
+          <span>
+            <strong>Paid subscription required:</strong> Choose Starter ($49/mo), Professional ($199/mo), or Enterprise ($499/mo) below to unlock the BorderBooks dashboard.
+          </span>
+        </div>
+      )}
+
       <div className="page-head">
         <div>
           <p className="eyebrow">Billing · USD / Month</p>
-          <h1>Plans sized to your reconciliation volume</h1>
+          <h1>Subscribe to unlock BorderBooks</h1>
           <p className="subtle">
             Access BorderBooks&apos; intelligent financial-control layer, PDF OCR, multi-currency FX tools, and deterministic matching engine. All prices in US Dollars (USD) per month.
           </p>

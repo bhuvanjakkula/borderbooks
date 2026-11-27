@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowRight, Sparkles, Check, ShieldCheck, BarChart3, TrendingUp, FileSpreadsheet } from "lucide-react";
+import { ArrowRight, Sparkles, Check, Lock, ExternalLink } from "lucide-react";
 
 const PRICING_PLANS = [
   {
@@ -10,7 +9,7 @@ const PRICING_PLANS = [
     badge: "Core Reconciliation",
     description: "For solo operators and lean finance teams automating invoice-to-bank matching.",
     featured: false,
-    cta: "Start with Starter",
+    cta: "Subscribe to Starter",
     stripeUrl: "https://buy.stripe.com/7sY28jeFUfWt9L9gQS2oE13",
     features: [
       "1 workspace included",
@@ -27,10 +26,10 @@ const PRICING_PLANS = [
     badge: "Most Popular",
     description: "For growing multi-currency businesses reconciling Stripe, Wise, Payoneer & bank payouts.",
     featured: true,
-    cta: "Choose Professional",
+    cta: "Subscribe to Professional",
     stripeUrl: "https://buy.stripe.com/bJefZ9fJYh0x9L9bwy2oE12",
     features: [
-      "Up to 5 workspaces",
+      "Up to 5 workspaces & multi-user RBAC",
       "Up to 10,000 rows per reconciliation run",
       "Multi-source parsers (Bank, Stripe, Wise, Payoneer)",
       "Live & historical multi-currency FX rates",
@@ -44,7 +43,7 @@ const PRICING_PLANS = [
     badge: "High-Volume Ops",
     description: "For high-volume finance operations requiring unlimited scale and compliance governance.",
     featured: false,
-    cta: "Choose Enterprise",
+    cta: "Subscribe to Enterprise",
     stripeUrl: "https://buy.stripe.com/aFa3cngO24dL5uT0RU2oE11",
     features: [
       "Unlimited workspaces & team members",
@@ -77,15 +76,12 @@ export default function Home() {
               </span>
             </div>
             <nav className="flex items-center gap-5 text-sm text-slate-300">
-              <a href="#pricing" className="hover:text-[#10b981] transition-colors font-medium">
-                Pricing
-              </a>
-              <Link
-                href="/app"
+              <a
+                href="#pricing"
                 className="px-4 py-2 rounded-lg bg-[#176b4d] hover:bg-[#10b981] text-white transition-all font-semibold"
               >
-                Enter App
-              </Link>
+                View Plans &amp; Subscribe
+              </a>
             </nav>
           </header>
 
@@ -95,7 +91,7 @@ export default function Home() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]"></span>
               </span>
-              Next-Gen Reconciliation · Direct Access
+              Next-Gen Reconciliation
             </div>
             <h1 className="text-6xl md:text-7xl font-serif font-medium leading-[1.1] tracking-tight mb-8">
               Match invoices with{" "}
@@ -108,17 +104,11 @@ export default function Home() {
             </p>
 
             <div className="flex flex-wrap gap-4 mb-12">
-              <Link
-                href="/app"
-                className="h-14 px-7 bg-gradient-to-r from-[#176b4d] to-[#0a3a2a] hover:from-[#10b981] hover:to-[#176b4d] text-white rounded-xl inline-flex items-center justify-center gap-3 font-bold text-[15px] shadow-[0_0_20px_rgba(23,107,77,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] transition-all duration-300"
-              >
-                Enter BorderBooks <ArrowRight size={18} />
-              </Link>
               <a
                 href="#pricing"
-                className="h-14 px-7 bg-white/5 hover:bg-white/10 border border-white/15 text-white rounded-xl inline-flex items-center justify-center gap-2 font-semibold text-[15px] transition-all"
+                className="h-14 px-7 bg-gradient-to-r from-[#176b4d] to-[#0a3a2a] hover:from-[#10b981] hover:to-[#176b4d] text-white rounded-xl inline-flex items-center justify-center gap-3 font-bold text-[15px] shadow-[0_0_20px_rgba(23,107,77,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] transition-all duration-300"
               >
-                View Monthly Plans (USD)
+                Choose a Plan to Get Started <ArrowRight size={18} />
               </a>
             </div>
 
@@ -139,64 +129,52 @@ export default function Home() {
           </section>
         </div>
 
-        {/* Right side: Instant Direct Workspace Access Card (No Clerk required) */}
+        {/* Right side: Paid Subscription Gate Card */}
         <div className="relative flex-1 flex items-center justify-center p-8 md:p-16 z-10">
           <div className="w-full max-w-md bg-white/[0.02] border border-white/10 rounded-2xl p-10 shadow-2xl backdrop-blur-xl relative overflow-hidden">
             <div className="text-center mb-8">
               <div className="mx-auto w-12 h-12 bg-[#176b4d]/20 border border-[#176b4d]/30 rounded-full flex items-center justify-center mb-4">
-                <ShieldCheck className="w-6 h-6 text-[#10b981]" />
+                <Lock className="w-6 h-6 text-[#10b981]" />
               </div>
-              <h2 className="text-3xl font-serif font-medium mb-2 text-white">Direct Workspace Access</h2>
+              <h2 className="text-3xl font-serif font-medium mb-2 text-white">Subscription Required</h2>
               <p className="text-sm text-slate-400">
-                Launch straight into BorderBooks reconciliation tools—no sign-up barrier required.
+                Select a monthly USD plan below to unlock the BorderBooks reconciliation dashboard, OCR engine, FX Rates, and Stripe Split tools.
               </p>
             </div>
 
             <div className="space-y-3 mb-8">
-              <Link
-                href="/app/new"
-                className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#10b981]/50 transition-all"
-              >
-                <FileSpreadsheet className="w-5 h-5 text-[#10b981] shrink-0" />
-                <div>
-                  <div className="text-sm font-semibold text-white">New Reconciliation Run</div>
-                  <div className="text-xs text-slate-400">Upload invoices &amp; bank/Stripe/Wise CSVs</div>
-                </div>
-              </Link>
-              <Link
-                href="/app/fx-rates"
-                className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#10b981]/50 transition-all"
-              >
-                <BarChart3 className="w-5 h-5 text-[#10b981] shrink-0" />
-                <div>
-                  <div className="text-sm font-semibold text-white">Multi-Currency FX Rates</div>
-                  <div className="text-xs text-slate-400">Historical mid-market rates &amp; variance tracking</div>
-                </div>
-              </Link>
-              <Link
-                href="/app/stripe-split"
-                className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#10b981]/50 transition-all"
-              >
-                <TrendingUp className="w-5 h-5 text-[#10b981] shrink-0" />
-                <div>
-                  <div className="text-sm font-semibold text-white">Stripe Payout FX Split</div>
-                  <div className="text-xs text-slate-400">Separate sales, fees, deposits &amp; FX gain/loss</div>
-                </div>
-              </Link>
+              {PRICING_PLANS.map((plan) => (
+                <a
+                  key={plan.name}
+                  href={plan.stripeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
+                    plan.featured
+                      ? "bg-[#176b4d]/20 border-[#10b981]/60 hover:bg-[#176b4d]/30"
+                      : "bg-white/[0.03] border-white/10 hover:border-[#10b981]/50"
+                  }`}
+                >
+                  <div>
+                    <div className="text-sm font-semibold text-white">
+                      {plan.name} {plan.featured ? "· Popular" : ""}
+                    </div>
+                    <div className="text-xs text-slate-400">{plan.price} USD / month</div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-[#10b981] shrink-0" />
+                </a>
+              ))}
             </div>
 
-            <Link
-              href="/app"
+            <a
+              href="#pricing"
               className="h-14 w-full bg-gradient-to-r from-[#176b4d] to-[#0a3a2a] hover:from-[#10b981] hover:to-[#176b4d] text-white rounded-xl flex items-center justify-center gap-3 font-bold text-[15px] shadow-[0_0_20px_rgba(23,107,77,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] transition-all duration-300"
             >
-              Open Workspace Directly <ArrowRight size={18} />
-            </Link>
+              Compare Full Plan Features <ArrowRight size={18} />
+            </a>
 
             <div className="mt-5 text-center text-xs text-slate-400">
-              Manage subscriptions anytime in{" "}
-              <Link href="/app/billing" className="text-[#10b981] font-bold hover:underline ml-1">
-                Billing &amp; Plans
-              </Link>
+              Dashboard access unlocks automatically after Stripe checkout completes.
             </div>
           </div>
         </div>
