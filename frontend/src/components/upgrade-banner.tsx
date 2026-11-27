@@ -1,7 +1,5 @@
 "use client";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
-import { useState } from "react";
-import { asError } from "@/lib/errors";
 
 const TIERS = [
   {
@@ -9,14 +7,16 @@ const TIERS = [
     name: "Starter",
     price: "$49 / mo USD",
     summary: "1 workspace · 2,000 rows/run · CSV & PDF OCR matching",
+    stripeUrl: "https://buy.stripe.com/7sY28jeFUfWt9L9gQS2oE13",
     accent: "var(--green)",
     featured: false,
   },
   {
     id: "PROFESSIONAL",
     name: "Professional",
-    price: "$149 / mo USD",
+    price: "$199 / mo USD",
     summary: "5 workspaces · 10,000 rows/run · FX Rates, Stripe Split & RBAC",
+    stripeUrl: "https://buy.stripe.com/bJefZ9fJYh0x9L9bwy2oE12",
     accent: "var(--amber)",
     featured: true,
   },
@@ -25,33 +25,13 @@ const TIERS = [
     name: "Enterprise",
     price: "$499 / mo USD",
     summary: "Unlimited workspaces & rows · Compliance workpapers & custom SLA",
+    stripeUrl: "https://buy.stripe.com/aFa3cngO24dL5uT0RU2oE11",
     accent: "var(--ink)",
     featured: false,
   },
 ] as const;
 
 export function UpgradeBanner() {
-  const [busy, setBusy] = useState("");
-  const [error, setError] = useState("");
-
-  async function checkout(plan: string) {
-    setBusy(plan);
-    setError("");
-    try {
-      const response = await fetch("/api/billing/checkout", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ plan }),
-      });
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok || !data.url) throw new Error(data.error ?? "Could not start checkout");
-      window.location.assign(data.url);
-    } catch (value) {
-      setError(asError(value, "Could not start checkout").message);
-      setBusy("");
-    }
-  }
-
   return (
     <aside
       className="upgrade-banner"
@@ -85,7 +65,6 @@ export function UpgradeBanner() {
         <p style={{ color: "#b45309", fontSize: "0.88rem", marginTop: "0.4rem", marginBottom: 0 }}>
           Scale your reconciliation volume, multi-currency FX tools, OCR uploads, and team workspaces anytime.
         </p>
-        {error && <small style={{ color: "#982f26", display: "block", marginTop: "0.5rem" }}>{error}</small>}
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
@@ -123,14 +102,15 @@ export function UpgradeBanner() {
                 {tier.summary}
               </p>
             </div>
-            <button
+            <a
+              href={tier.stripeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className={tier.featured ? "button" : "button secondary"}
-              style={{ width: "100%" }}
-              disabled={Boolean(busy)}
-              onClick={() => checkout(tier.id)}
+              style={{ width: "100%", textDecoration: "none", textAlign: "center" }}
             >
-              {busy === tier.id ? "Opening checkout…" : <>Choose {tier.name} <ArrowUpRight size={15} /></>}
-            </button>
+              Choose {tier.name} <ArrowUpRight size={15} />
+            </a>
           </div>
         ))}
       </div>

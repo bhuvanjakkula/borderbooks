@@ -11,6 +11,7 @@ const PRICING_PLANS = [
     description: "For solo operators and lean finance teams automating invoice-to-bank matching.",
     featured: false,
     cta: "Start with Starter",
+    stripeUrl: "https://buy.stripe.com/7sY28jeFUfWt9L9gQS2oE13",
     features: [
       "1 workspace included",
       "Up to 2,000 rows per reconciliation run",
@@ -22,11 +23,12 @@ const PRICING_PLANS = [
   },
   {
     name: "Professional",
-    price: "$149",
+    price: "$199",
     badge: "Most Popular",
     description: "For growing multi-currency businesses reconciling Stripe, Wise, Payoneer & bank payouts.",
     featured: true,
     cta: "Choose Professional",
+    stripeUrl: "https://buy.stripe.com/bJefZ9fJYh0x9L9bwy2oE12",
     features: [
       "Up to 5 workspaces",
       "Up to 10,000 rows per reconciliation run",
@@ -43,6 +45,7 @@ const PRICING_PLANS = [
     description: "For high-volume finance operations requiring unlimited scale and compliance governance.",
     featured: false,
     cta: "Choose Enterprise",
+    stripeUrl: "https://buy.stripe.com/aFa3cngO24dL5uT0RU2oE11",
     features: [
       "Unlimited workspaces & team members",
       "Unlimited rows per high-volume batch run",
@@ -257,8 +260,10 @@ export default function Home() {
                   </ul>
                 </div>
 
-                <Link
-                  href="/app/billing"
+                <a
+                  href={plan.stripeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`h-12 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition-all duration-300 ${
                     plan.featured
                       ? "bg-gradient-to-r from-[#176b4d] to-[#0a3a2a] hover:from-[#10b981] hover:to-[#176b4d] text-white shadow-[0_0_20px_rgba(23,107,77,0.4)]"
@@ -266,7 +271,7 @@ export default function Home() {
                   }`}
                 >
                   {plan.cta} <ArrowRight size={16} />
-                </Link>
+                </a>
               </div>
             ))}
           </div>

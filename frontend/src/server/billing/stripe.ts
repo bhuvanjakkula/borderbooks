@@ -20,7 +20,7 @@ export const BILLING_TIERS: Record<
   },
   PROFESSIONAL: {
     name: "BorderBooks Professional",
-    unitAmountCents: 14900,
+    unitAmountCents: 19900,
     dbPlan: "COMMERCE",
     envPriceKey: "STRIPE_PRICE_PROFESSIONAL",
   },

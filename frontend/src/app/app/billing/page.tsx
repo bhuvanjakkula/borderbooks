@@ -12,6 +12,7 @@ const PLANS = [
     description: "For solo operators and lean finance teams automating core invoice-to-bank matching and OCR.",
     featured: false,
     cta: "Choose Starter",
+    stripeUrl: "https://buy.stripe.com/7sY28jeFUfWt9L9gQS2oE13",
     features: [
       "1 workspace included",
       "Up to 2,000 rows per reconciliation run",
@@ -24,11 +25,12 @@ const PLANS = [
   {
     id: "PROFESSIONAL",
     name: "Professional",
-    price: "$149",
+    price: "$199",
     cadence: "/ month",
     description: "For growing multi-currency finance teams reconciling Stripe, Wise, Payoneer & bank payouts.",
     featured: true,
     cta: "Choose Professional",
+    stripeUrl: "https://buy.stripe.com/bJefZ9fJYh0x9L9bwy2oE12",
     features: [
       "Up to 5 workspaces & multi-user RBAC",
       "Up to 10,000 rows per reconciliation run",
@@ -46,6 +48,7 @@ const PLANS = [
     description: "For high-volume finance operations requiring unlimited scale, zero-trust controls & SLAs.",
     featured: false,
     cta: "Choose Enterprise",
+    stripeUrl: "https://buy.stripe.com/aFa3cngO24dL5uT0RU2oE11",
     features: [
       "Unlimited workspaces & enterprise RBAC",
       "Unlimited rows per high-volume batch run",
@@ -61,20 +64,20 @@ export default function BillingPage() {
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
 
-  async function open(path: string, body: unknown, key: string) {
-    setBusy(key);
+  async function openPortal() {
+    setBusy("portal");
     setError("");
     try {
-      const response = await fetch(path, {
+      const response = await fetch("/api/billing/portal", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({}),
       });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok || !data.url) throw new Error(data.error ?? "Could not open billing");
+      if (!response.ok || !data.url) throw new Error(data.error ?? "Could not open billing portal");
       window.location.assign(data.url);
     } catch (value) {
-      setError(asError(value, "Could not open billing").message);
+      setError(asError(value, "Could not open billing portal").message);
       setBusy("");
     }
   }
@@ -91,7 +94,7 @@ export default function BillingPage() {
         </div>
         <button
           className="button secondary"
-          onClick={() => open("/api/billing/portal", {}, "portal")}
+          onClick={openPortal}
           disabled={Boolean(busy)}
         >
           Manage billing <ExternalLink size={15} />
@@ -124,14 +127,15 @@ export default function BillingPage() {
                 </li>
               ))}
             </ul>
-            <button
+            <a
               className={plan.featured ? "button" : "button secondary"}
-              style={{ width: "100%" }}
-              disabled={Boolean(busy)}
-              onClick={() => open("/api/billing/checkout", { plan: plan.id }, plan.id)}
+              style={{ width: "100%", textDecoration: "none", textAlign: "center" }}
+              href={plan.stripeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              {busy === plan.id ? "Opening checkout…" : plan.cta}
-            </button>
+              {plan.cta} <ExternalLink size={15} />
+            </a>
           </section>
         ))}
       </div>

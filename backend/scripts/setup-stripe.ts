@@ -16,7 +16,7 @@ const stripe = new Stripe(secretKeyMatch[1], { apiVersion: '2023-10-16' as any }
 async function setup() {
   const plans = [
     { name: 'BorderBooks Starter', amount: 4900, envKey: 'STRIPE_PRICE_STARTER' },
-    { name: 'BorderBooks Professional', amount: 14900, envKey: 'STRIPE_PRICE_PROFESSIONAL' },
+    { name: 'BorderBooks Professional', amount: 19900, envKey: 'STRIPE_PRICE_PROFESSIONAL' },
     { name: 'BorderBooks Enterprise', amount: 49900, envKey: 'STRIPE_PRICE_ENTERPRISE' },
   ];
 
