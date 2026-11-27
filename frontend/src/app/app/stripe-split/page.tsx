@@ -2,7 +2,7 @@
 
 import {
   TrendingUp, TrendingDown, Download, Loader2, AlertCircle,
-  DollarSign, ArrowUpRight, ArrowDownRight, Minus,
+  DollarSign, ArrowUpRight, ArrowDownRight, Minus, Bot
 } from "lucide-react";
 import { useState } from "react";
 
@@ -61,10 +61,10 @@ function exportSplitCsv(split: PayoutSplit): void {
 }
 
 function LegTypeIcon({ type }: { type: SplitLeg["type"] }) {
-  if (type === "sale") return <ArrowUpRight size={14} className="leg-icon sale" />;
-  if (type === "refund") return <ArrowDownRight size={14} className="leg-icon refund" />;
-  if (type === "fee") return <Minus size={14} className="leg-icon fee" />;
-  return <DollarSign size={14} className="leg-icon other" />;
+  if (type === "sale") return <ArrowUpRight size={14} style={{ color: '#10b981' }} />;
+  if (type === "refund") return <ArrowDownRight size={14} style={{ color: '#f59e0b' }} />;
+  if (type === "fee") return <Minus size={14} style={{ color: '#ef4444' }} />;
+  return <DollarSign size={14} style={{ color: '#6366f1' }} />;
 }
 
 export default function StripeSplitPage() {
@@ -72,7 +72,7 @@ export default function StripeSplitPage() {
   const [split, setSplit] = useState<PayoutSplit | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const stripeConfigured = true; // API will return 400 if not configured
+  const stripeConfigured = true;
 
   async function fetchSplit() {
     if (!payoutId.startsWith("po_")) { setError("Payout ID must start with 'po_'"); return; }
@@ -96,10 +96,10 @@ export default function StripeSplitPage() {
   const netFx = split ? split.totalFxGainMinor - split.totalFxLossMinor : 0;
 
   return (
-    <main className="page">
+    <main className="page narrow" style={{ maxWidth: '1000px' }}>
       <div className="page-head">
         <div>
-          <p className="eyebrow">Stripe Reconciliation</p>
+          <p className="eyebrow">FORENSIC ACCOUNTING</p>
           <h1>Payout FX Split</h1>
           <p className="subtle">
             Decompose any Stripe payout into sale / deposit / fee / FX gain-loss legs.
@@ -109,113 +109,112 @@ export default function StripeSplitPage() {
       </div>
 
       {/* Input */}
-      <div className="split-input card">
-        <label>
-          Stripe Payout ID
-          <div className="split-input-row">
-            <input
-              id="payout-id"
-              value={payoutId}
-              onChange={e => setPayoutId(e.target.value)}
-              placeholder="po_1ABcDE2fGhIjKL3MnOpQrSt"
-              onKeyDown={e => e.key === "Enter" && void fetchSplit()}
-            />
-            <button className="button" onClick={fetchSplit} disabled={loading || !payoutId}>
-              {loading ? <Loader2 size={15} className="spin" /> : <TrendingUp size={15} />}
-              {loading ? "Loading…" : "Analyse Payout"}
-            </button>
-          </div>
-        </label>
-        <p className="subtle" style={{ margin: 0, fontSize: 12 }}>
-          Requires <code>STRIPE_SECRET_KEY</code> in environment. Payout must belong to your Stripe account.
-        </p>
+      <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.5rem', marginBottom: '2rem' }}>
+        <div style={{ flex: 1 }}>
+          <p className="eyebrow" style={{ marginBottom: '0.5rem' }}>Stripe Payout ID</p>
+          <input
+            id="payout-id"
+            value={payoutId}
+            onChange={e => setPayoutId(e.target.value)}
+            placeholder="po_1ABcDE2fGhIjKL3MnOpQrSt"
+            onKeyDown={e => e.key === "Enter" && void fetchSplit()}
+            style={{ width: '100%', padding: '0.75rem', borderRadius: '4px', border: '1px solid var(--border)', fontFamily: 'monospace' }}
+          />
+        </div>
+        <button className="button" onClick={fetchSplit} disabled={loading || !payoutId} style={{ padding: '0.75rem 1.5rem', marginTop: '1.5rem' }}>
+          {loading ? <Loader2 size={15} className="spin" style={{ marginRight: '0.5rem' }} /> : <TrendingUp size={15} style={{ marginRight: '0.5rem' }} />}
+          {loading ? "Loading…" : "Analyse Payout"}
+        </button>
       </div>
 
       {error && (
-        <div className="notice error" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div className="notice error" style={{ display: "flex", alignItems: "center", gap: 8, padding: '1rem', background: '#fef2f2', color: '#991b1b', marginBottom: '2rem' }}>
           <AlertCircle size={15} /> {error}
         </div>
       )}
 
       {split && (
         <>
-          {/* Summary cards */}
-          <div className="split-summary">
-            <div className="card split-stat">
-              <span>Total Sales</span>
-              <strong>{fmt(split.totalSaleMinor, split.legs.find(l=>l.type==="sale")?.currency ?? split.settlementCurrency)}</strong>
-              <small>Gross receipts across all charges</small>
-            </div>
-            <div className="card split-stat">
-              <span>Total Fees</span>
-              <strong className="red">{fmt(split.totalFeeMinor, split.settlementCurrency)}</strong>
-              <small>Stripe processing fees deducted</small>
-            </div>
-            <div className="card split-stat">
-              <span>Deposited</span>
-              <strong>{fmt(split.totalDepositMinor, split.settlementCurrency)}</strong>
-              <small>Net amount in {split.settlementCurrency}</small>
-            </div>
-            <div className={`card split-stat ${netFx >= 0 ? "gain" : "loss"}`}>
-              <span>FX vs Mid-Market</span>
-              <strong className={netFx >= 0 ? "green" : "red"}>
-                {netFx >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
-                {fmt(Math.abs(netFx), split.settlementCurrency, false)}
-              </strong>
-              <small>{netFx >= 0 ? "Favourable vs ECB mid" : "Cost vs ECB mid-market"}</small>
+          {/* AI Insight */}
+          <div className="card" style={{ background: '#f8fafc', borderColor: '#e2e8f0', padding: '1.5rem', marginBottom: '2rem', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+            <div style={{ padding: '0.75rem', background: '#e0e7ff', borderRadius: '50%', color: '#4f46e5' }}><Bot size={24} /></div>
+            <div>
+              <strong style={{ color: '#3730a3', display: 'block', marginBottom: '0.5rem', fontSize: '1.1rem' }}>AI Forensic Analysis</strong>
+              <p style={{ color: '#4338ca', fontSize: '0.95rem', margin: 0, lineHeight: 1.5 }}>
+                This payout processed <strong>{split.legs.length}</strong> individual legs. You paid <strong>{fmt(split.totalFeeMinor, split.settlementCurrency)}</strong> in Stripe processing fees.
+                Due to currency conversions from {Object.keys(split.midRateUsed).join(', ')}, you incurred a hidden spread of <strong style={{ color: netFx >= 0 ? '#166534' : '#991b1b' }}>{fmt(Math.abs(netFx), split.settlementCurrency)}</strong> compared to the ECB mid-market rate.
+              </p>
             </div>
           </div>
 
-          {/* Mid rates used */}
-          {Object.keys(split.midRateUsed).length > 0 && (
-            <div className="card fx-rates-used">
-              <p className="eyebrow" style={{ marginBottom: 8 }}>Mid-market rates used (ECB)</p>
-              <div className="rate-chips">
-                {Object.entries(split.midRateUsed).map(([pair, r]) => (
-                  <span key={pair} className="rate-chip">
-                    <strong>{pair}</strong> {r.toFixed(6)}
-                  </span>
-                ))}
-              </div>
+          {/* Summary cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+            <div className="card">
+              <span className="eyebrow">Total Sales (Gross)</span>
+              <strong style={{ display: 'block', fontSize: '1.75rem', margin: '0.5rem 0' }}>{fmt(split.totalSaleMinor, split.legs.find(l=>l.type==="sale")?.currency ?? split.settlementCurrency)}</strong>
+              <small className="subtle">Across all charges</small>
             </div>
-          )}
+            <div className="card" style={{ borderTop: '4px solid #ef4444' }}>
+              <span className="eyebrow">Total Fees</span>
+              <strong style={{ display: 'block', fontSize: '1.75rem', margin: '0.5rem 0', color: '#ef4444' }}>{fmt(split.totalFeeMinor, split.settlementCurrency)}</strong>
+              <small className="subtle">Stripe processing fees</small>
+            </div>
+            <div className="card">
+              <span className="eyebrow">Net Deposited</span>
+              <strong style={{ display: 'block', fontSize: '1.75rem', margin: '0.5rem 0' }}>{fmt(split.totalDepositMinor, split.settlementCurrency)}</strong>
+              <small className="subtle">Settled to bank</small>
+            </div>
+            <div className="card" style={{ borderTop: `4px solid ${netFx >= 0 ? '#10b981' : '#f59e0b'}` }}>
+              <span className="eyebrow">FX Spread vs Mid</span>
+              <strong style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.75rem', margin: '0.5rem 0', color: netFx >= 0 ? '#10b981' : '#f59e0b' }}>
+                {netFx >= 0 ? <TrendingUp size={20} /> : <TrendingDown size={20} />}
+                {fmt(Math.abs(netFx), split.settlementCurrency, false)}
+              </strong>
+              <small className="subtle">{netFx >= 0 ? "Favourable vs ECB" : "Cost vs ECB"}</small>
+            </div>
+          </div>
 
           {/* Legs table */}
-          <div className="card table-wrap" style={{ marginTop: 16 }}>
-            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"16px 18px 10px" }}>
-              <p className="eyebrow" style={{ margin:0 }}>Balance Transaction Legs ({split.legs.length})</p>
+          <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"1.5rem", borderBottom: '1px solid var(--border)', background: 'rgba(0,0,0,0.02)' }}>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Balance Transaction Legs</h3>
+                <p className="subtle" style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem' }}>Full forensic breakdown of {split.payoutId}</p>
+              </div>
               <button className="button secondary small" onClick={() => exportSplitCsv(split)}>
-                <Download size={13} /> Export CSV
+                <Download size={15} style={{ marginRight: '0.5rem' }} /> Export CSV
               </button>
             </div>
-            <table>
-              <thead>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
+              <thead style={{ background: 'rgba(0,0,0,0.02)', borderBottom: '1px solid var(--border)' }}>
                 <tr>
-                  <th>Type</th>
-                  <th>ID</th>
-                  <th>Description</th>
-                  <th>Currency</th>
-                  <th style={{ textAlign:"right" }}>Amount</th>
-                  <th style={{ textAlign:"right" }}>Settled ({split.settlementCurrency})</th>
-                  <th style={{ textAlign:"right" }}>FX Rate</th>
-                  <th style={{ textAlign:"right" }}>FX Gain/Loss</th>
-                  <th>Date</th>
+                  <th style={{ padding: '1rem' }}>TYPE</th>
+                  <th style={{ padding: '1rem' }}>TX ID</th>
+                  <th style={{ padding: '1rem' }}>CURRENCY</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>AMOUNT</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>SETTLED ({split.settlementCurrency})</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>FX RATE</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>SPREAD</th>
                 </tr>
               </thead>
               <tbody>
                 {split.legs.map(leg => (
-                  <tr key={leg.id} className={`leg-row leg-${leg.type}`}>
-                    <td><div style={{ display:"flex", alignItems:"center", gap:5 }}><LegTypeIcon type={leg.type} />{leg.type}</div></td>
-                    <td><code style={{ fontSize:10 }}>{leg.id.slice(0,20)}…</code></td>
-                    <td style={{ maxWidth:200, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{leg.description}</td>
-                    <td>{leg.currency}</td>
-                    <td style={{ textAlign:"right", fontVariantNumeric:"tabular-nums" }}>{major(leg.amountMinor, leg.currency)}</td>
-                    <td style={{ textAlign:"right", fontVariantNumeric:"tabular-nums" }}>{major(leg.settlementAmountMinor, leg.settlementCurrency)}</td>
-                    <td style={{ textAlign:"right" }}>{leg.currency === leg.settlementCurrency ? "—" : leg.fxRate.toFixed(6)}</td>
-                    <td style={{ textAlign:"right", color: leg.fxGainLossMinor >= 0 ? "var(--green)" : "#b63e35", fontWeight: 600 }}>
+                  <tr key={leg.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                    <td style={{ padding: '1rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textTransform: 'capitalize', fontWeight: 600 }}>
+                        <LegTypeIcon type={leg.type} /> {leg.type}
+                      </div>
+                    </td>
+                    <td style={{ padding: '1rem' }}>
+                      <code style={{ fontSize: '0.8rem', color: '#666' }}>{leg.id.slice(0,20)}…</code>
+                    </td>
+                    <td style={{ padding: '1rem', fontWeight: 600, color: '#666' }}>{leg.currency}</td>
+                    <td style={{ padding: '1rem', textAlign: 'right', fontFamily: 'monospace', fontSize: '1rem' }}>{major(leg.amountMinor, leg.currency)}</td>
+                    <td style={{ padding: '1rem', textAlign: 'right', fontFamily: 'monospace', fontSize: '1rem', fontWeight: 600 }}>{major(leg.settlementAmountMinor, leg.settlementCurrency)}</td>
+                    <td style={{ padding: '1rem', textAlign: 'right', fontFamily: 'monospace' }}>{leg.currency === leg.settlementCurrency ? "—" : leg.fxRate.toFixed(6)}</td>
+                    <td style={{ padding: '1rem', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: leg.fxGainLossMinor >= 0 ? '#10b981' : '#ef4444' }}>
                       {leg.currency === leg.settlementCurrency ? "—" : fmt(leg.fxGainLossMinor, leg.settlementCurrency, true)}
                     </td>
-                    <td style={{ fontSize:11, color:"var(--muted)" }}>{new Date(leg.created).toLocaleDateString()}</td>
                   </tr>
                 ))}
               </tbody>

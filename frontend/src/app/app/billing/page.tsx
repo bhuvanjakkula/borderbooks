@@ -9,14 +9,14 @@ const PLANS = [
     name: "Starter",
     price: "$49",
     cadence: "/ month",
-    description: "For solo operators and finance teams automating core invoice-to-bank matching.",
+    description: "For solo operators and lean finance teams automating core invoice-to-bank matching and OCR.",
     featured: false,
     cta: "Choose Starter",
     features: [
       "1 workspace included",
       "Up to 2,000 rows per reconciliation run",
-      "Deterministic invoice & bank CSV matching",
-      "Bank & generic statement parsers",
+      "CSV & PDF OCR invoice uploads",
+      "Deterministic invoice & bank matching engine",
       "Explainable audit trail & XLSX / CSV journal exports",
       "30-day automatic upload deletion & zero bank scraping",
     ],
@@ -26,16 +26,16 @@ const PLANS = [
     name: "Professional",
     price: "$149",
     cadence: "/ month",
-    description: "For growing multi-currency businesses reconciling Stripe, Wise, Payoneer & bank payouts.",
+    description: "For growing multi-currency finance teams reconciling Stripe, Wise, Payoneer & bank payouts.",
     featured: true,
     cta: "Choose Professional",
     features: [
-      "Up to 5 workspaces",
+      "Up to 5 workspaces & multi-user RBAC",
       "Up to 10,000 rows per reconciliation run",
       "Multi-source parsers (Bank, Stripe, Wise, Payoneer)",
       "Live & historical multi-currency FX rates",
-      "Stripe Payout FX Split analyzer (fees & FX gain/loss)",
-      "Custom account labels, match-window replay & PDF reports",
+      "Stripe & Forensic Payout FX Split analyzer",
+      "AP Copilot exception triage, custom labels & PDF reports",
     ],
   },
   {
@@ -43,16 +43,16 @@ const PLANS = [
     name: "Enterprise",
     price: "$499",
     cadence: "/ month",
-    description: "For high-volume finance operations requiring unlimited scale and compliance governance.",
+    description: "For high-volume finance operations requiring unlimited scale, zero-trust controls & SLAs.",
     featured: false,
     cta: "Choose Enterprise",
     features: [
-      "Unlimited workspaces & team members",
+      "Unlimited workspaces & enterprise RBAC",
       "Unlimited rows per high-volume batch run",
-      "All Professional reconciliation, FX & Stripe Split tools",
+      "All Professional OCR, AP Copilot, FX & Forensic Split tools",
       "Audit-ready compliance workpapers & custom exports",
       "Dedicated onboarding & priority technical support",
-      "Custom SLA & enterprise security review",
+      "Custom SLA & enterprise security governance",
     ],
   },
 ] as const;
@@ -86,7 +86,7 @@ export default function BillingPage() {
           <p className="eyebrow">Billing · USD / Month</p>
           <h1>Plans sized to your reconciliation volume</h1>
           <p className="subtle">
-            Every tier runs on BorderBooks&apos; deterministic reconciliation engine with an immutable, explainable audit trail. All prices in US Dollars (USD) per month.
+            Access BorderBooks&apos; intelligent financial-control layer, PDF OCR, multi-currency FX tools, and deterministic matching engine. All prices in US Dollars (USD) per month.
           </p>
         </div>
         <button
