@@ -14,37 +14,31 @@ if (!secretKeyMatch) {
 const stripe = new Stripe(secretKeyMatch[1], { apiVersion: '2023-10-16' as any });
 
 async function setup() {
-  const studioProduct = await stripe.products.create({ name: 'Studio Plan' });
-  const studioPrice = await stripe.prices.create({
-    product: studioProduct.id,
-    unit_amount: 2900,
-    currency: 'usd',
-    recurring: { interval: 'month' },
-  });
-
-  const commerceProduct = await stripe.products.create({ name: 'Commerce Plan' });
-  const commercePrice = await stripe.prices.create({
-    product: commerceProduct.id,
-    unit_amount: 7900,
-    currency: 'usd',
-    recurring: { interval: 'month' },
-  });
+  const plans = [
+    { name: 'BorderBooks Starter', amount: 4900, envKey: 'STRIPE_PRICE_STARTER' },
+    { name: 'BorderBooks Professional', amount: 14900, envKey: 'STRIPE_PRICE_PROFESSIONAL' },
+    { name: 'BorderBooks Enterprise', amount: 49900, envKey: 'STRIPE_PRICE_ENTERPRISE' },
+  ];
 
   let newEnv = envContent;
-  if (/STRIPE_PRICE_STUDIO=/.test(newEnv)) {
-    newEnv = newEnv.replace(/STRIPE_PRICE_STUDIO=.*/, `STRIPE_PRICE_STUDIO=${studioPrice.id}`);
-  } else {
-    newEnv += `\nSTRIPE_PRICE_STUDIO=${studioPrice.id}`;
-  }
-
-  if (/STRIPE_PRICE_COMMERCE=/.test(newEnv)) {
-    newEnv = newEnv.replace(/STRIPE_PRICE_COMMERCE=.*/, `STRIPE_PRICE_COMMERCE=${commercePrice.id}`);
-  } else {
-    newEnv += `\nSTRIPE_PRICE_COMMERCE=${commercePrice.id}`;
+  for (const plan of plans) {
+    const product = await stripe.products.create({ name: plan.name });
+    const price = await stripe.prices.create({
+      product: product.id,
+      unit_amount: plan.amount,
+      currency: 'usd',
+      recurring: { interval: 'month' },
+    });
+    const pattern = new RegExp(`${plan.envKey}=.*`);
+    if (pattern.test(newEnv)) {
+      newEnv = newEnv.replace(pattern, `${plan.envKey}=${price.id}`);
+    } else {
+      newEnv += `\n${plan.envKey}=${price.id}`;
+    }
   }
 
   fs.writeFileSync(envPath, newEnv);
-  console.log('Stripe prices created and .env.local updated successfully.');
+  console.log('Stripe Starter ($49/mo), Professional ($149/mo), and Enterprise ($499/mo) prices created and .env.local updated.');
 }
 
 setup().catch(console.error);

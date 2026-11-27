@@ -1,15 +1,9 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/server/db/client";
 import { fetchMidRate, fetchRateHistory } from "@/server/fx";
-import { getAuth } from "@clerk/nextjs/server";
 
 export const GET = async (req: NextRequest) => {
-  const { userId } = getAuth(req);
-  if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const { searchParams } = new URL(req.url);
   const base = (searchParams.get("base") ?? "USD").toUpperCase();
   const quote = (searchParams.get("quote") ?? "EUR").toUpperCase();
